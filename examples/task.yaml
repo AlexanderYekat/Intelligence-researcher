@@ -1,0 +1,67 @@
+id: IR-042
+version: 1
+title: Сравнить варианты semantic IR
+type: research
+goal_id: GOAL-001
+workstream: semantic-ir
+
+objective: >
+  Проверить три представления IR на способности сохранять семантику
+  1С 7.7 и поддерживать последующее построение call graph.
+
+priority: 55
+difficulty: 9
+risk: high
+blocking: false
+speculative: true
+preemptible: true
+
+depends_on:
+  - PARSER-017
+  - AST-031
+
+required_capabilities:
+  - architecture
+  - static-analysis
+  - long-context
+
+routing:
+  min_model_tier: S
+  preferred_models:
+    - astra-max
+    - claude-opus
+  independence_constraints: []
+
+budget:
+  max_attempts: 3
+  max_wall_time: 6h
+  max_cost_usd: 40
+
+permissions:
+  filesystem: workspace-write
+  network: allowlisted
+  external_writes: forbidden
+  secrets: []
+
+acceptance:
+  - Сформулированы критерии сравнения
+  - Каждый вариант проверен на одном общем корпусе
+  - Указаны утраты семантики и ограничения
+  - Артефакты эксперимента воспроизводимы
+
+review:
+  required: true
+  mode: adversarial
+  min_tier: S
+  independence: different_model_family
+
+outputs:
+  - path: findings/IR-042.md
+    schema: investigation-v1
+  - path: experiments/IR-042/
+    schema: experiment-bundle-v1
+
+retry_policy:
+  infrastructure_failures: 3
+  quality_revisions: 1
+  escalate_after_quality_failures: 1
